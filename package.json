@@ -49,7 +49,13 @@
       "name": "modbus",
       "contextPath": "modbus",
       "key": "modbus-application-key",
-      "dynamicOptionsUrl": "/apps/public/public-options/options.json"
+      "brandingEntry": "./branding/branding.less",
+      "dynamicOptionsUrl": "/apps/public/public-options/options.json",
+      "tabsHorizontal": true,
+      "rightDrawer": true,
+      "icon": {
+        "class": "c8y-icon-tools"
+      }
     },
     "cli": {}
   },
