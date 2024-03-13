@@ -46,7 +46,7 @@
   },
   "c8y": {
     "application": {
-      "name": "modbus",
+      "name": "MODBUS CONFIG",
       "contextPath": "modbus",
       "key": "modbus-application-key",
       "brandingEntry": "./branding/branding.less",

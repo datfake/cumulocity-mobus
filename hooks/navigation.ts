@@ -18,7 +18,7 @@ export class ExampleNavigationFactory implements NavigatorNodeFactory {
     navs.push(
       new NavigatorNode({
         label: 'Configuration',
-        icon: 'rocket',
+        icon: 'device-profile',
         path: '/configuration',
         priority: 100
       })

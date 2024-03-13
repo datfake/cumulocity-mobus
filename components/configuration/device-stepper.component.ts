@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { C8yStepper } from '@c8y/ngx-components';
 import { ConfigurationService } from './configuration.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -34,12 +34,37 @@ export class DeviceStepperComponent implements OnInit {
 
   ngOnInit() {
     this.formGroupStepOne = this.fb.group({
-      name: ['', Validators.required]
+      imei: ['', Validators.required]
     });
 
     this.formGroupStepTwo = this.fb.group({
-      type: ['']
+      modbusCluster: [''],
+      typeModbus: [''],
+      quantity: [0],
+      addressOffset: [0],
+      registerConfiguration: this.fb.array([])
     });
+  }
+
+  addRegisterConfiguration() {
+    const typeArray = this.formGroupStepTwo.get('registerConfiguration') as FormArray;
+    typeArray.push(this.fb.group({
+      registerConfigurationAddress: [0],
+      registerConfigurationFragmentname: [''],
+      registerConfigurationSeriesName: [''],
+      registerConfigurationUnit: [''],
+      typeModbusRegister: [''],
+      invertBitOder: [false],
+      invertByteOrder: [false],
+      invertWordOrder: [false],
+      bitNumber: [''],
+      enableAlarm: [false]
+    }));
+  }
+
+  removeRegisterConfiguration(index: number) {
+    const typeArray = this.formGroupStepTwo.get('registerConfiguration') as FormArray;
+    typeArray.removeAt(index);
   }
 
   async navigate(clickedStepIDX: number) {

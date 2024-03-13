@@ -1,7 +1,7 @@
 <div class="p-b-16">
   <div *ngIf="isModal" class="modal-header modal-header-primary text-center">
     <i [c8yIcon]="'diamond'" style="font-size: 32px"></i>
-    <h3 id="modal-title" class="p-t-16">{{ 'Create a new device ' }}</h3>
+    <h3 id="modal-title" class="p-t-16">{{ 'Modbus Cluster Configuration' }}</h3>
   </div>
   <c8y-stepper
     (onStepChange)="navigate($event)"
@@ -16,13 +16,13 @@
     </ng-template>
     <cdk-step [stepControl]="formGroupStepOne" label="Device IMEI">
       <div class="m-l-40 m-r-40 m-t-32">
-        <h4 title="Device name" class="p-b-8">Enter the Device IMEI:</h4>
+        <h4 title="Enter the Device IMEI" class="p-b-8">Enter the Device IMEI:</h4>
         <c8y-form-group>
           <div [formGroup]="formGroupStepOne">
             <input
               class="form-control"
               type="text"
-              formControlName="name"
+              formControlName="imei"
               placeholder="IMEI (required)"
               #nameRef
               required
@@ -35,21 +35,137 @@
       </div>
       <c8y-stepper-buttons></c8y-stepper-buttons>
     </cdk-step>
-    <cdk-step [stepControl]="formGroupStepTwo" label="Modbus cluster">
+    <!-- <cdk-step [stepControl]="formGroupStepTwo" label="Modbus cluster">
       <div class="m-l-40 m-r-40 m-t-32">
-        <h4 title="Enter device type" class="p-b-8">Modbus Cluster Configuration:</h4>
+        <h4 title="Modbus Cluster Configuration" class="p-b-8">Modbus Cluster Configuration:</h4>
         <span>Modbus Cluster:</span>
+        <c8y-form-group>
+          <div [formGroup]="formGroupStepTwo">
+            <select id="modbusCluster" class="form-control" formControlName="modbusCluster">
+              <option [ngValue]="''"></option>
+              <option [ngValue]="1">1</option>
+              <option [ngValue]="2">2</option>
+              <option [ngValue]="3">3</option>
+              <option [ngValue]="4">4</option>
+              <option [ngValue]="5">5</option>
+              <option [ngValue]="6">6</option>
+              <option [ngValue]="7">7</option>
+              <option [ngValue]="8">8</option>
+            </select>
+            <h6>Note: Cluster 1 = /30069/0, Cluster 2 = /30069/1, Cluster 3 = /30069/2</h6>
+          </div>
+        </c8y-form-group>
+
+        <span>Type of Modbus Object:</span>
+        <c8y-form-group>
+          <div [formGroup]="formGroupStepTwo">
+            <select id="typeModbus" class="form-control" formControlName="typeModbus">
+              <option [ngValue]="'Coils'">Coils</option>
+              <option [ngValue]="'Discrete Inputs'">Discrete Inputs</option>
+              <option [ngValue]="'Holding Registers'">Holding Registers</option>
+              <option [ngValue]="'Input Registers'">Input Registers</option>
+            </select>
+          </div>
+        </c8y-form-group>
+
+        <span>Quantity:</span>
         <c8y-form-group>
           <div [formGroup]="formGroupStepTwo">
             <input
               class="form-control"
-              type="any"
-              formControlName="type"
-              placeholder=""
+              type="number"
+              formControlName="quantity"
+              placeholder="1 - 125(required)"
             />
-            <h6>Note: Cluster 1 = /30069/0, Cluster 2 = /30069/1, Cluster 3 = /30069/2</h6>
           </div>
         </c8y-form-group>
+
+        <span>Address Offset (Starting Address):</span>
+        <c8y-form-group>
+          <div [formGroup]="formGroupStepTwo">
+            <input
+              class="form-control"
+              type="number"
+              formControlName="addressOffset"
+              placeholder="1 - 65535(required)"
+            />
+          </div>
+        </c8y-form-group>
+
+        <div formArrayName="registerConfiguration">
+          <div *ngFor="let type of formGroupStepTwo.get('registerConfiguration').controls; let i = index">
+            <div [formGroupName]="i">
+              <div class="m-l-40 m-r-40 m-t-32">
+                <div class="register-config">
+                  <h4 title="Register Configuration" class="p-b-8">Register Configuration:</h4>
+                  <span>Address:</span>
+                  <c8y-form-group>
+                    <div [formGroup]="i">
+                      <input
+                        class="form-control"
+                        type="number"
+                        formControlName="registerConfigurationAddress"
+                        placeholder="1 - 65535(required)"
+                      />
+                    </div>
+                  </c8y-form-group>
+      
+                  <span>Fragment Name:</span>
+                  <c8y-form-group>
+                    <div [formGroup]="i">
+                      <input
+                        class="form-control"
+                        type="any"
+                        formControlName="registerConfigurationFragmentname"
+                        placeholder="mw_Flow (required)"
+                      />
+                    </div>
+                  </c8y-form-group>
+      
+                  <span>Series Name:</span>
+                  <c8y-form-group>
+                    <div [formGroup]="i">
+                      <input
+                        class="form-control"
+                        type="any"
+                        formControlName="registerConfigurationSeriesName"
+                        placeholder="flow (required)"
+                      />
+                    </div>
+                  </c8y-form-group>
+      
+                  <span>Unit:</span>
+                  <c8y-form-group>
+                    <div [formGroup]="i">
+                      <input
+                        class="form-control"
+                        type="any"
+                        formControlName="registerConfigurationUnit"
+                        placeholder="L/s (required)"
+                      />
+                    </div>
+                  </c8y-form-group>
+      
+                  <span>Type of Modbus Register:</span>
+                  <c8y-form-group>
+                    <div [formGroup]="i">
+                      <select id="typeModbusRegister" class="form-control" formControlName="typeModbusRegister">
+                        <option [ngValue]="'Coils'">Coils</option>
+                        <option [ngValue]="'Discrete Inputs'">Discrete Inputs</option>
+                        <option [ngValue]="'Holding Registers'">Holding Registers</option>
+                        <option [ngValue]="'Input Registers'">Input Registers</option>
+                      </select>
+                    </div>
+                  </c8y-form-group>
+                </div>
+              </div>
+              <button type="button" (click)="removeRegisterConfiguration(i)">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" (click)="addRegisterConfiguration()">Add Register Configuration</button>
+        
       </div>
       <c8y-stepper-buttons
         title="Save"
@@ -57,7 +173,216 @@
         [labels]="{ next: 'Save' }"
         [pending]="pendingStatus"
       ></c8y-stepper-buttons>
-    </cdk-step>
+    </cdk-step> -->
+    <div [formGroup]="formGroupStepTwo">
+      <cdk-step [stepControl]="formGroupStepTwo" label="Modbus cluster">
+        <div class="m-l-40 m-r-40 m-t-32">
+          <h4 title="Modbus Cluster Configuration" class="p-b-8">Modbus Cluster Configuration:</h4>
+          <span>Modbus Cluster:</span>
+          <c8y-form-group>
+            <select id="modbusCluster" class="form-control" formControlName="modbusCluster">
+              <option [ngValue]="''"></option>
+              <option [ngValue]="1">1</option>
+              <option [ngValue]="2">2</option>
+              <option [ngValue]="3">3</option>
+              <option [ngValue]="4">4</option>
+              <option [ngValue]="5">5</option>
+              <option [ngValue]="6">6</option>
+              <option [ngValue]="7">7</option>
+              <option [ngValue]="8">8</option>
+            </select>
+            <h6>Note: Cluster 1 = /30069/0, Cluster 2 = /30069/1, Cluster 3 = /30069/2</h6>
+          </c8y-form-group>
+    
+          <span>Type of Modbus Object:</span>
+          <c8y-form-group>
+            <select id="typeModbus" class="form-control" formControlName="typeModbus">
+              <option [ngValue]="'Coils'">Coils</option>
+              <option [ngValue]="'Discrete Inputs'">Discrete Inputs</option>
+              <option [ngValue]="'Holding Registers'">Holding Registers</option>
+              <option [ngValue]="'Input Registers'">Input Registers</option>
+            </select>
+          </c8y-form-group>
+    
+          <span>Quantity:</span>
+          <c8y-form-group>
+            <input
+              class="form-control"
+              type="number"
+              formControlName="quantity"
+              placeholder="1 - 125 (required)"
+            />
+          </c8y-form-group>
+    
+          <span>Address Offset (Starting Address):</span>
+          <c8y-form-group>
+            <input
+              class="form-control"
+              type="number"
+              formControlName="addressOffset"
+              placeholder="1 - 65535(required)"
+            />
+          </c8y-form-group>
+    
+          <div formArrayName="registerConfiguration">
+            <div class="row">
+              <div *ngFor="let type of formGroupStepTwo.get('registerConfiguration').controls; let i = index" class="col-md-3 m-t-32">
+                <div [formGroupName]="i">
+                  <div style="padding: 30px; border: #D2D9E0 solid 1px; position: relative;">
+                    <div class="register-config">
+                      <h4 title="Register Configuration" class="p-b-8">Register Configuration {{ i + 1}}:</h4>
+                      <span>Address:</span>
+                      <c8y-form-group>
+                        <input
+                          class="form-control"
+                          type="number"
+                          formControlName="registerConfigurationAddress"
+                          placeholder="1 - 65535(required)"
+                        />
+                      </c8y-form-group>
+      
+                      <span>Fragment Name:</span>
+                      <c8y-form-group>
+                        <input
+                          class="form-control"
+                          type="any"
+                          formControlName="registerConfigurationFragmentname"
+                          placeholder="mw_Flow (required)"
+                          aria-describedby="required-registerConfigurationFragmentname-text"
+                        />
+                      </c8y-form-group>
+      
+                      <span>Series Name:</span>
+                      <c8y-form-group>
+                        <input
+                          class="form-control"
+                          type="any"
+                          formControlName="registerConfigurationSeriesName"
+                          placeholder="flow (required)"
+                        />
+                      </c8y-form-group>
+      
+                      <span>Unit:</span>
+                      <c8y-form-group>
+                        <input
+                          class="form-control"
+                          type="any"
+                          formControlName="registerConfigurationUnit"
+                          placeholder="L/s (required)"
+                        />
+                      </c8y-form-group>
+      
+                      <span>Type of Modbus Register:</span>
+                      <c8y-form-group>
+                        <select id="typeModbusRegister" class="form-control" formControlName="typeModbusRegister">
+                          <option [ngValue]="'UINT8'">UINT8 - Unsigned Integer (8 Bit)</option>
+                          <option [ngValue]="'UINT16'">UINT16 - Unsigned Integer (16 Bit)</option>
+                          <option [ngValue]="'UINT32'">UINT32 - Unsigned Integer (32 Bit)</option>
+                          <option [ngValue]="'UINT64'">UINT64 - Unsigned Integer (64 Bit)</option>
+                          <option [ngValue]="'SINT16'">SINT16 - Signed Integer (16 Bit)</option>
+                          <option [ngValue]="'SINT32'">SINT32 - Signed Integer (32 Bit)</option>
+                          <option [ngValue]="'SINT64'">SINT64 - Signed Integer (64bit)</option>
+                          <option [ngValue]="'PBOOL'">PBOOL- Packed BOOL (16 Bit)</option>
+                          <option [ngValue]="'FLOAT32'">FLOAT - IEEE Floating Point (32 Bit)</option>
+                          <option [ngValue]="'FLOAT64'">FLOAT - IEEE Floating Point (64 Bit)</option>
+                          <option [ngValue]="'TOTAL'">TOTAL - Totalised Value (64Bit)</option>
+                        </select>
+                      </c8y-form-group>
+                      <div class="float-group">
+                        <c8y-form-group>
+                          <span>Invert Bit Order (LSB-first):</span>
+                          <label>
+                            <input type="checkbox" formControlName="invertBitOder" />
+                          </label>
+                        </c8y-form-group>
+                        <c8y-form-group>
+                          <span>Invert Byte Order (Little Endian):</span>
+                          <label>
+                            <input type="checkbox" formControlName="invertByteOrder" />
+                          </label>
+                        </c8y-form-group>
+                        <c8y-form-group>
+                          <span>Invert Word Order (Little Endian):</span>
+                          <label>
+                            <input type="checkbox" formControlName="invertWordOrder" />
+                          </label>
+                        </c8y-form-group>
+                      </div>
+                      
+                      <div class="pbool-group">
+                        <span>Bit Number (Packed Boolean):</span>
+                        <c8y-form-group>
+                          <select id="bitNumber" class="form-control" formControlName="bitNumber">
+                            <option [ngValue]="''"></option>
+                            <option [ngValue]="1">1</option>
+                            <option [ngValue]="2">2</option>
+                            <option [ngValue]="3">3</option>
+                            <option [ngValue]="4">4</option>
+                            <option [ngValue]="5">5</option>
+                            <option [ngValue]="6">6</option>
+                            <option [ngValue]="7">7</option>
+                            <option [ngValue]="8">8</option>
+                            <option [ngValue]="9">9</option>
+                            <option [ngValue]="10">10</option>
+                            <option [ngValue]="11">11</option>
+                            <option [ngValue]="12">12</option>
+                            <option [ngValue]="13">13</option>
+                            <option [ngValue]="14">14</option>
+                            <option [ngValue]="15">15</option>
+                            <option [ngValue]="16">16</option>
+                          </select>
+                        </c8y-form-group>
+                        <c8y-form-group>
+                          <span>Enable Alarm:</span>
+                          <label>
+                            <input type="checkbox" formControlName="enableAlarm" />
+                          </label>
+                        </c8y-form-group>
+                        <c8y-form-group>
+                          <span>Invert Bit Order (LSB-first):</span>
+                          <label>
+                            <input type="checkbox" formControlName="invertBitOder" />
+                          </label>
+                        </c8y-form-group>
+                        <c8y-form-group>
+                          <span>Invert Byte Order (Little Endian):</span>
+                          <label>
+                            <input type="checkbox" formControlName="invertByteOrder" />
+                          </label>
+                        </c8y-form-group>
+                      </div>
+                      <div class="unit-group">
+                        <c8y-form-group>
+                          <span>Invert Bit Order (LSB-first):</span>
+                          <label>
+                            <input type="checkbox" formControlName="invertBitOder" />
+                          </label>
+                        </c8y-form-group>
+                      </div>
+                    </div>
+                    <button type="button" class="btn btn-sm" style="position: absolute; top: 0; right: 0;" (click)="removeRegisterConfiguration(i)">
+                      <c8y-li-icon [icon]="'remove'"></c8y-li-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div style="padding: 30px; border: #D2D9E0 solid 1px; position: relative; text-align: center;" class="col-md-3 m-t-32">
+                <button type="button" (click)="addRegisterConfiguration()" class="btn btn-default">
+                  Add <i [c8yIcon]="'plus-circle'"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <c8y-stepper-buttons
+          title="Save"
+          (onNext)="save()"
+          [labels]="{ next: 'Save' }"
+          [pending]="pendingStatus"
+        ></c8y-stepper-buttons>
+      </cdk-step>
+    </div>
+    
     <!-- Final step -->
     <cdk-step state="final" label="Finish">
       <div class="m-l-40 m-r-40 m-t-32">
