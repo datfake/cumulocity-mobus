@@ -76,6 +76,10 @@ export class DeviceStepperComponent implements OnInit {
       this.onMovingBackward(clickedStepIDX, selectedStepIDX);
     }
   }
+
+  nextStep1() {
+    this.stepperService.findDevice(this.formGroupStepOne.controls['imei'].value);
+  }
   onMovingForward(clickedStepIDX: number, selectedStepIDX: number) {
     this.stepper.next();
     if (clickedStepIDX === step.THIRD && selectedStepIDX === step.SECOND) {

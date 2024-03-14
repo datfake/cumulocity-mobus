@@ -1,0 +1,5 @@
+.navigatorContent .link.active {
+    background: var(--navigator-active-bg,var(--navigator-dark-active-bg,#53cd61));
+    border-left-color: var(--navigator-active-color,var(--navigator-dark-active-color,#fff));
+    color: var(--navigator-active-color,var(--navigator-dark-active-color,#fff))
+}
