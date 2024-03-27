@@ -47,7 +47,7 @@
   "c8y": {
     "application": {
       "name": "MODBUS CONFIG",
-      "contextPath": "modbus",
+      "contextPath": "modbus-config",
       "key": "modbus-application-key",
       "brandingEntry": "./branding/branding.less",
       "dynamicOptionsUrl": "/apps/public/public-options/options.json",

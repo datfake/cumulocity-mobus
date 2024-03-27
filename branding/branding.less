@@ -11,6 +11,7 @@
 @brand-primary: @brand-color;
 @brand-complementary: #a8b3b5;
 @brand-primary-light: lighten(@brand-primary, 20%);
+@branch-dark: #0b385b;
 // status colors
 @status-success: #5cb85c;
 @status-info: @brand-color;
@@ -20,17 +21,21 @@
 @warning: #fdc000;
 @status-warning-dark: #ff8000;
 @success: #5cb85c;
+@code-color: #c7254e;
 // grays
 @text-color: #444;
 @gray-30: #3b4748;
 @gray-40: #49595b;
 @gray-40: #6d7a7c;
+@gray-5: #677680;
 // @gray: #8a9596;
 @gray-80: #cacece;
 @gray-90: #f8f8f8;
 @gray-100: #fcfcfc;
+@gray-text: #333;
 @text-muted: @gray-50;
 
+@headings-color: #333;
 @body-background-color: #f8f8f8; // page background color - always use a light background
 
 /* HEADER */
@@ -53,9 +58,6 @@
 @navigator-text-color-selected: white;
 @navigator-active-bg: @brand-primary;
 @navigator-background-selected: @brand-primary;
-@component-color-focus: #fff;
-@root-component-active-color: @brand-primary;
-@component-color-active: @brand-primary;
 // when set adds a vertical gradient in the navigator background
 @grad-top: "";
 @grad-bottom: "";
@@ -64,6 +66,9 @@
 @font-family-sans-serif: "Roboto", Helvetica, Arial, sans-serif;
 @font-family-base: @font-family-sans-serif;
 @headings-font-family: "Roboto", Helvetica, Arial, sans-serif;
+@font-family-headings: @headings-font-family;
+@headings-font-weight: 300;
+@headings-line-height: 1.15;
 
 /* BUTTONS */
 @component-border-radius-base-base: 2px;
@@ -72,12 +77,60 @@
 @btn-shadow: none;
 
 /* COMPONENTS */
+@root-component-active-color: @brand-primary;
+@component-color-active: @brand-primary;
+@component-color-focus: #fff;
 @spinner-color: lighten(@brand-primary, 30%);
 @link-color: #337ab7;
 @link-color-hover: darken(@link-color, 15%);
 @form-control-border-color-focus: #66afe9;
+@navigator-platform-logo-height: 28px;
+@code-background: #f2f3f4;
+@root-component-border: rgba(0,0,0,.05);
+@root-component-label-color: @gray-text;
+@component-link-color: @root-component-label-color;
+@root-component-link-color: @link-color;
+@link-color: @brand-primary;
+@component-link-color-hover: @root-component-link-color-hover;
+@root-component-link-color-hover: @link-color-hover;
+@link-color-hover: @brand-primary;
+@component-background: @root-component-background;
+@root-component-background: #fff;
+@card-border-radius: 2px;
+@header-text-color: @branch-dark;
+@component-brand-primary: @root-component-brand-primary;
+@root-component-brand-primary: @brand-primary;
+
+.btn {
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 0;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    margin-bottom: 0;
+    padding: 5px 16px;
+    text-align: center;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    -webkit-transition: border .25s ease,background .25s ease,-webkit-box-shadow .25s ease;
+    transition: border .25s ease,background .25s ease,-webkit-box-shadow .25s ease;
+    -o-transition: border .25s ease,box-shadow .25s ease,background .25s ease;
+    transition: border .25s ease,box-shadow .25s ease,background .25s ease;
+    transition: border .25s ease,box-shadow .25s ease,background .25s ease,-webkit-box-shadow .25s ease;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: nowrap
+}
+
 
 .navigatorContent {
+    width: 240px;
     position: relative;
     overflow-y: auto;
     overflow-x: hidden;
@@ -115,6 +168,7 @@
 
     .link {
         display: flex;
+        outline: none;
         flex-flow: row nowrap;
         align-items: center;
         border-left: @navigator-active-border-width solid transparent;
@@ -135,82 +189,14 @@
             padding: 11px 16px;
             min-width: 0;
             color: inherit;
-
-            >div {
-                flex-shrink: 0;
-            }
-
-            >span,
-            >div {
-                .text-truncate();
-                background-color: transparent;
-            }
-
-            &.open {
-                .expander {
-                    .rotate(180deg);
-                }
-            }
         }
 
-        c8y-navigator-icon,
-        device-status {
-            padding: 0 0 0 16px;
-            margin-right: 16px;
-            flex-grow: 0;
-
-            +.btn-clean {
-                padding-left: 0;
-            }
+        &:hover {
+            outline: none;
         }
 
-        .btn-clean:active {
-            background-color: @navigator-background-active;
-        }
-
-        &:hover,
-        &:focus-within {
-            outline: 0 !important;
-            outline-offset: -2px;
-
-            .btn-clean,
-            .btn-link {
-                background-color: transparent;
-                outline: 0 !important;
-            }
-        }
-
-        &.active {
-            color: @navigator-text-color-selected;
-            background: @navigator-background-selected;
-            border-left-color: @navigator-border-selected;
-            font-weight: 500;
-        }
-
-        &.dragged-hover {
-            .lighten(@navigator-background-selected, 0.2);
-
-            * {
-                pointer-events: none;
-            }
-        }
-
-        &.open {
-            box-shadow: inset 0 1px 0 @navigator-separator-color,
-                inset 0 -1px 0 @navigator-separator-color;
-        }
-
-        &.open.active {
-            .shadow-border(1px; rgba(0, 0, 0, 0.2));
-            background: @navigator-background-selected;
-        }
-
-        &.parent.open:not(.active) {
-            .shadow-border(1px; @navigator-separator-color);
-
-            ~.children {
-                .shadow-border(-1px; @navigator-separator-color);
-            }
+        c8y-navigator-icon {
+            line-height: 1.7;
         }
     }
 
@@ -224,24 +210,6 @@
         .icon {
             font-size: 24px !important;
         }
-    }
-
-    .icon {
-        display: inline-block;
-        margin-right: 0;
-        text-align: center;
-    }
-
-    .empty,
-    .showMore {
-        font-size: 0.93em;
-        opacity: 0.6;
-        font-style: italic;
-    }
-
-    .link.empty:hover {
-        background-color: transparent;
-        opacity: 0.8;
     }
 }
 
@@ -262,6 +230,8 @@
 
 .navigator {
     .title {
+        width: 240px;
+
         .c8y-icon:after {
             color: #a2e4aa
         }
@@ -272,7 +242,7 @@
             background-size: contain;
             display: block;
             margin: 0 auto 8px;
-            padding-bottom: var(--navigator-platform-logo-height, 28px);
+            padding-bottom: @navigator-platform-logo-height;
             width: 208px;
         }
     }
@@ -329,8 +299,8 @@ fieldset[disabled] .btn-primary {
     &.disabled,
     &[disabled] {
         &, &:active, &:focus, &:hover, &.active {
-            background-color: var(--brand-primary, #53cd61);
-            border-color: var(--brand-primary, #53cd61);
+            background-color: @brand-primary;
+            border-color: @brand-primary;
             color: #fff;
         }
     }
@@ -345,9 +315,9 @@ fieldset[disabled] .btn-primary {
         inset 0 1px 0 0 @form-control-border-color-default, inset 0 -4px 0 @border-color!important;
       &:focus {
         color: @text-color;
-        box-shadow: inset 2px 0 0 0 #53cd61,
-        inset -2px 0 0 0 #53cd61,
-        inset 0 2px 0 0 #53cd61,
+        box-shadow: inset 2px 0 0 0 @brand-primary,
+        inset -2px 0 0 0 @brand-primary,
+        inset 0 2px 0 0 @brand-primary,
         inset 0 -4px 0 #d9534f !important;
       }
     }
@@ -356,9 +326,9 @@ fieldset[disabled] .btn-primary {
   .form-control-focus(@border: @form-control-border-color-focus, @bg: @form-control-background-focus, @color: @form-control-color-focus) {
     &:focus {
         background-color: #fff;
-        border-color: #53cd61;
-        -webkit-box-shadow: inset 0 0 0 2px #53cd61;
-        box-shadow: inset 0 0 0 2px #53cd61;
+        border-color: @brand-primary;
+        -webkit-box-shadow: inset 0 0 0 2px @brand-primary;
+        box-shadow: inset 0 0 0 2px @brand-primary;
         color: #333;
         outline: 0
     }
@@ -368,17 +338,64 @@ fieldset[disabled] .btn-primary {
     &:focus,
     &:hover {
         background: #fff;
-        border-color: #53cd61;
-        -webkit-box-shadow: inset 0 0 0 1px #53cd61;
-        box-shadow: inset 0 0 0 1px #53cd61;
-        color: #53cd61;
+        border-color: @brand-primary;
+        -webkit-box-shadow: inset 0 0 0 1px @brand-primary;
+        box-shadow: inset 0 0 0 1px @brand-primary;
+        color: @brand-primary;
     }
 }
 
 .btn-primary {
-    background-color: var(--brand-primary,#53cd61);
-    border-color: var(--brand-primary,#53cd61);
+    background-color: var(--brand-primary,@brand-primary);
+    border-color: var(--brand-primary,@brand-primary);
     color: #fff
+}
+
+.btn-default {
+    background-color: @component-background;
+    border-color: @component-brand-primary;
+    color: @component-brand-primary;
+
+	&:active {
+		-webkit-box-shadow: inset 0 0 0 1px @component-brand-primary;
+		box-shadow: inset 0 0 0 1px @component-brand-primary;
+        background-color: @component-background;
+        border-color: @component-brand-primary;
+        color: @component-brand-primary;
+	}
+	&:focus {
+		-webkit-box-shadow: inset 0 0 0 1px @component-brand-primary;
+		box-shadow: inset 0 0 0 1px @component-brand-primary;
+        background-color: @component-background;
+        border-color: @component-brand-primary;
+        color: @component-brand-primary;
+	}
+	&:hover {
+		-webkit-box-shadow: inset 0 0 0 1px @component-brand-primary;
+		box-shadow: inset 0 0 0 1px @component-brand-primary;
+        background-color: @component-background;
+        border-color: @component-brand-primary;
+        color: @component-brand-primary;
+	}
+}
+
+.btn-default.active {
+	-webkit-box-shadow: inset 0 0 0 1px @component-brand-primary;
+	box-shadow: inset 0 0 0 1px @component-brand-primary;
+}
+.btn-default.focus {
+	-webkit-box-shadow: inset 0 0 0 1px @component-brand-primary;
+	box-shadow: inset 0 0 0 1px @component-brand-primary;
+}
+.open {
+	>.dropdown-toggle.btn-default {
+		-webkit-box-shadow: inset 0 0 0 1px @component-brand-primary;
+		box-shadow: inset 0 0 0 1px @component-brand-primary;
+	}
+}
+
+hr {
+    height: 0.1em;
 }
 
 .h1,
@@ -393,7 +410,127 @@ h3,
 h4,
 h5,
 h6 {
-    color: #0b385b;
-    font-weight: 300;
-    line-height: 1.15;
+    color: @headings-color;
+    font-family: @font-family-headings;
+    font-weight: @headings-font-weight;
+    line-height: @headings-line-height;
+}
+
+code {
+    background-color: @code-background;
+    color: @code-color;
+}
+
+.card {
+	fill: @gray-text;
+	--hr-border: @root-component-border;
+	--label-text-color: @root-component-label-color;
+	--legend-text-color: @gray-5;
+	--link-color: @component-link-color;
+	--link-color-hover: @component-link-color-hover;
+	background: @component-background;
+	border-radius: @card-border-radius;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	color: @gray-text;
+	display: block;
+	margin-bottom: 24px/2;
+	padding: 0;
+	position: relative;
+}
+
+.form-label {
+    font-weight: normal;
+    font-size: larger;
+}
+
+.small-note {
+    font-size: small;
+    padding-top: 0.5em;
+}
+
+.small-space {
+    padding: 0.5em;
+}
+
+.medium-space {
+    padding: 1em;
+}
+
+.addConfig {
+    min-width: 15em;
+    border: 1px solid rgb(232, 232, 232);
+    padding: 1em;
+    margin: 1em;
+}
+
+.register-config {
+    min-width: 15em;
+    border: 1px solid rgb(232, 232, 232);
+    padding: 1em;
+    margin: 1em;
+}
+
+.addBtn {
+    height: 55px;
+    margin-top: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.form-group {
+	label {
+		display: block;
+	}
+}
+
+.minusIcon {
+    font-size: xx-large;
+}
+
+.removeBtn {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    float: right;
+}
+
+.plusIcon {
+    font-size: xx-large;
+    margin: auto;
+}
+
+.configTitle {
+    float: left;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin-bottom: 0.5em;
+}
+
+input[type=checkbox] {
+	font-size: 16px;
+	line-height: normal;
+	margin: 1px 0 0;
+	margin-top: 1px \9;
+}
+
+input[type=radio] {
+	font-size: 16px;
+	line-height: normal;
+	margin: 1px 0 0;
+	margin-top: 1px \9;
+}
+
+
+.form-control-checkbox {
+    margin-top: 0.5em;
+    padding-left: 0.5em;
+    margin-left: 0.5em;
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
 }

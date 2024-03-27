@@ -40,8 +40,8 @@ export class DeviceStepperComponent implements OnInit {
     this.formGroupStepTwo = this.fb.group({
       modbusCluster: [''],
       typeModbus: [''],
-      quantity: [0],
-      addressOffset: [0],
+      quantity: [],
+      addressOffset: [],
       registerConfiguration: this.fb.array([])
     });
   }
@@ -49,16 +49,16 @@ export class DeviceStepperComponent implements OnInit {
   addRegisterConfiguration() {
     const typeArray = this.formGroupStepTwo.get('registerConfiguration') as FormArray;
     typeArray.push(this.fb.group({
-      registerConfigurationAddress: [0],
-      registerConfigurationFragmentname: [''],
-      registerConfigurationSeriesName: [''],
-      registerConfigurationUnit: [''],
-      typeModbusRegister: [''],
-      invertBitOder: [false],
-      invertByteOrder: [false],
-      invertWordOrder: [false],
-      bitNumber: [''],
-      enableAlarm: [false]
+      registerAddress: [],
+      fragmentName: [''],
+      seriesName: [''],
+      unitName: [''],
+      modbusRegisterType: [''],
+      bitOrder: [false],
+      byteOrder: [false],
+      wordOrder: [false],
+      bit: [''],
+      alarm: [false]
     }));
   }
 
@@ -78,7 +78,8 @@ export class DeviceStepperComponent implements OnInit {
   }
 
   nextStep1() {
-    this.stepperService.findDevice(this.formGroupStepOne.controls['imei'].value);
+    // this.stepperService.findDevice(this.formGroupStepOne.controls['imei'].value);
+    this.stepper.next();
   }
   onMovingForward(clickedStepIDX: number, selectedStepIDX: number) {
     this.stepper.next();
